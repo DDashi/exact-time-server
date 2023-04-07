@@ -2,7 +2,6 @@ import socket
 import time
 import json
 
-
 def run_on_port(port, time_delta):
     # Создаем сокет и привязываем его к порту 123
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

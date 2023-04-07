@@ -4,23 +4,19 @@ import threading
 import socket
 import time
 from time_server import run_on_port
-
+from time_server import get_config
 
 class TestTimeServer(unittest.TestCase):
     def setUp(self):
         # Запускаем тестовый сервер в отдельном потоке
-        config = self.get_config()
+        config = get_config()
 
         self.port = config['port']
         self.delta_from_config = config['time_delta']
 
-        self.server_thread = threading.Thread(target=run_on_port)
+        self.server_thread = threading.Thread(target=run_on_port, args=(self.port, self.delta_from_config))
         self.server_thread.start()
 
-    def get_config(self):
-        with open('config.json', 'r') as f:
-            loaded_config = json.load(f)
-        return loaded_config
 
     def test_time_calculation(self):
         # Проверяем, что время корректно изменяется
@@ -35,5 +31,8 @@ class TestTimeServer(unittest.TestCase):
         self.assertEqual(delta_time, self.delta_from_config)
 
 
+
+
 if __name__ == '__main__':
     unittest.main()
+
